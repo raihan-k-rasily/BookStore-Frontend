@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@plugin "flowbite-react/plugin/tailwindcss";
+@source "../.flowbite-react/class-list.json";
+
+
+*{
+  font-family: "Libre Baskerville", serif;
+}
+
+p{
+   font-family: "Italiana", sans-serif;
+}
