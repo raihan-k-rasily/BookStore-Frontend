@@ -11,10 +11,78 @@ import { FaMoneyCheck } from "react-icons/fa";
 import { Card } from "flowbite-react";
 
 import { BsCashCoin } from "react-icons/bs";
+import { useState } from "react";
 
 
 function Profile() {
 
+  const [bookDetails, setBookDetails] = useState({
+    title: "",
+    author: "",
+    noOfPages: "",
+    imageUrl: "",
+    price: "",
+    discountPrice: "",
+    abstract: "",
+    publisher: "",
+    language: "",
+    isbn: "",
+    category: "",
+    uploadImage: []
+  })
+
+  const [preview,setPreview]=useState('')
+  const [previewList,setPreviewList]=useState([])
+
+
+
+  const { title, author, noOfPages, imageUrl, price, discountPrice, abstract, publisher, language, isbn, category } = bookDetails
+
+  const handleUpload = (e) => {
+    console.log(e.target.files[0]);
+
+    let imgArray = bookDetails.uploadImage
+    imgArray.push(e.target.files[0])
+    console.log(imgArray);
+
+    setBookDetails({ ...bookDetails, uploadImage: imgArray })
+
+    // cover image file or url 
+    const url = URL.createObjectURL(e.target.files[0])
+    console.log(url);
+    setPreview(url)
+
+    // to hold 3 img
+    let imgList = previewList
+    imgList.push(url)
+    console.log(imgList);
+
+    setPreviewList
+    
+    
+
+
+
+  }
+
+  const handleAddBook = async () => {
+    // alert("addBook")
+    console.log(bookDetails);
+    if (title == "" ||
+      author == "" ||
+      noOfPages == "" ||
+      imageUrl == "" ||
+      price == "" ||
+      discountPrice == "" ||
+      abstract == "" ||
+      publisher == "" ||
+      language == "" ||
+      isbn == "" ||
+      category == "") {
+      alert("Please Fill The form")
+    }
+
+  }
 
 
   return (
@@ -69,42 +137,43 @@ function Profile() {
                   <div className="grid grid-cols-2 md:grid-cols-2 gap-4">
                     <div className="flex max-w-md flex-col gap-4 ml-12">
                       <TextInput
-                        id="input-gray"
+                        onChange={e => setBookDetails({ ...bookDetails, title: e.target.value })}
                         placeholder="Title"
                         required
                         color="white"
                       />
                       <TextInput
-                        id="input-gray"
+                        onChange={e => setBookDetails({ ...bookDetails, author: e.target.value })}
                         placeholder="Author"
                         required
                         color="white"
                       />
                       <TextInput
-                        id="input-gray"
+                        onChange={e => setBookDetails({ ...bookDetails, noOfPages: e.target.value })}
                         placeholder="No of pages"
                         required
                         color="white"
                       />
                       <TextInput
-                        id="input-gray"
+                        onChange={e => setBookDetails({ ...bookDetails, imageUrl: e.target.value })}
                         placeholder="Image url"
                         required
                         color="white"
                       />
                       <TextInput
-                        id="input-gray"
+                        onChange={e => setBookDetails({ ...bookDetails, price: e.target.value })}
                         placeholder="Price"
                         required
                         color="white"
                       />
                       <TextInput
-                        id="input-gray"
+                        onChange={e => setBookDetails({ ...bookDetails, discountPrice: e.target.value })}
                         placeholder="Discount Price"
                         required
                         color="white"
                       />
                       <Textarea
+                        onChange={e => setBookDetails({ ...bookDetails, abstract: e.target.value })}
                         color="white"
                         id="comment"
                         placeholder="Abstract"
@@ -114,34 +183,64 @@ function Profile() {
                     </div>
                     <div className="flex max-w-md flex-col gap-4 ml-12">
                       <TextInput
-                        id="input-gray"
+                        onChange={e => setBookDetails({ ...bookDetails, publisher: e.target.value })}
                         placeholder="Publisher"
                         required
                         color="white"
                       />
                       <TextInput
-                        id="input-gray"
+                        onChange={e => setBookDetails({ ...bookDetails, language: e.target.value })}
                         placeholder="Language"
                         required
                         color="white"
                       />
                       <TextInput
-                        id="input-gray"
+                        onChange={e => setBookDetails({ ...bookDetails, isbn: e.target.value })}
                         placeholder="ISBN"
                         required
                         color="white"
                       />
                       <TextInput
-                        id="input-gray"
+                        onChange={e => setBookDetails({ ...bookDetails, category: e.target.value })}
                         placeholder="Category"
                         required
                         color="white"
                       />
 
-                      <div className="ms-30">
+                      <div className="ms-40 mt-40">
                         <label htmlFor="imgfile" >
-                          <input id="imgfile" type="file" hidden />
-                          <img src="https://www.pngplay.com/wp-content/uploads/8/Upload-Icon-Image-Transparent-Image.png" alt="" width={"120px"} />
+                          <input id="imgfile" type="file" hidden
+                            onChange={(e) => handleUpload(e)} />
+                          {
+                            previewList.length<3? preview && preview ?
+                            <div>
+                              
+                              <img src={preview} alt="" width={"120px"} />
+                              <img src='https://media.istockphoto.com/id/1014086232/vector/plus-sign-icon-button-flat-round-positive-symbol-sticker.jpg?s=612x612&w=0&k=20&c=QTJS7zd6Qy2Og2V_WBFov-rJgdNDZd7iYj6Oo6_LsCg=' alt="" width={"50px"} height={"20px"} />
+                            </div>
+                            : 
+                            <img src="https://www.pngplay.com/wp-content/uploads/8/Upload-Icon-Image-Transparent-Image.png" alt="" width={"100px"} height={"100px"} />
+                            :
+                            ''
+                          }
+
+                          {/* Preview List Array */}
+
+                          {
+                            preview && 
+                            <div className="flex justify-evenly flex-wrap">
+                              {
+                                previewList?.map(item=>(
+                                  <img src={item} alt="" width={'80px'} height={'80px'}/>
+                                ))
+                              }
+                            </div>
+                          }
+
+
+
+
+
                         </label>
                       </div>
 
@@ -154,10 +253,11 @@ function Profile() {
                         </button>
 
                         <button
+                          onClick={handleAddBook}
                           type="button"
                           class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-0 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
                         >
-                          Submit
+                          Add Book
                         </button>
                       </div>
                     </div>
@@ -173,19 +273,19 @@ function Profile() {
                 <div className="flex justify-evenly">
                   <div>
                     <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-                     Noteworthy technology acquisitions 2021
+                      Noteworthy technology acquisitions 2021
                     </h5>
                     <p className="font-normal text-gray-700 dark:text-gray-400">
-                     Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.
+                      Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.
                     </p>
-                  </div>   
-                <div>
-                  <img src="https://i.pinimg.com/564x/71/3f/f2/713ff2828de8fd471369fed7991d9cc7.jpg" alt="" width={"200px"}/>
-                </div>             
+                  </div>
+                  <div>
+                    <img src="https://i.pinimg.com/564x/71/3f/f2/713ff2828de8fd471369fed7991d9cc7.jpg" alt="" width={"200px"} />
+                  </div>
                 </div>
-                
+
               </Card>
-            </TabItem>  
+            </TabItem>
 
 
             <TabItem title="Purchase History" icon={FaMoneyCheck}>

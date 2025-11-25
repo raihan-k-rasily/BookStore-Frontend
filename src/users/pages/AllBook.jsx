@@ -1,15 +1,50 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../components/Header";
 import BookstoreFooter from "../../components/BookstoreFooter";
 import { Card } from "flowbite-react";
 import { Link } from "react-router-dom";
 
 function AllBooks() {
+  const user = JSON.parse(sessionStorage.getItem("userDetails"));
+  const[token,setToken]=useState('')
+  
+  useEffect(()=>{
+    setToken(sessionStorage.getItem('token'))
+  },[token])
+
+
+
   return (
     <>
       <Header />
 
       <section className="mb-15">
+        {
+        !token ? 
+        (
+          <div style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            gap: "20px"
+          }}>
+            <img 
+              width={300} 
+              src="https://cdn-icons-gif.flaticon.com/11255/11255957.gif"
+              alt=""
+            />
+            <div>
+              <h3>Please <a
+                href="/login"
+                className="text-green-700 hover:text-green-800 font-medium"
+              >
+                Login
+              </a></h3>
+              <p>To Explore More</p>
+            </div>
+          </div>
+        )
+        :
         <div>
           <div className="text-center mt-10 text-3xl">
             <h1>Collections</h1>
@@ -101,28 +136,29 @@ function AllBooks() {
             </ul>
 
             <div>
-        <Link to={'/veiwbook/:id'}>
-            <Card href="#" className="max-w-sm">
-              <img src="https://images.unsplash.com/photo-1502979932800-33d311b7ce56?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8b3BlbiUyMGJvb2t8ZW58MHx8MHx8fDA%3D&fm=jpg&q=60&w=3000" alt="" />
-              <p className="font-normal text-gray-700 dark:text-gray-400">
-                Here are the biggest enterprise technology acquisitions of 2021 so
-                far, in reverse chronological order.
-              </p>
-            </Card>
-        </Link>
-        </div>
+              <Link to={'/veiwbook/:id'}>
+                <Card href="#" className="max-w-sm">
+                  <img src="https://images.unsplash.com/photo-1502979932800-33d311b7ce56?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8b3BlbiUyMGJvb2t8ZW58MHx8MHx8fDA%3D&fm=jpg&q=60&w=3000" alt="" />
+                  <p className="font-normal text-gray-700 dark:text-gray-400">
+                    Here are the biggest enterprise technology acquisitions of 2021 so
+                    far, in reverse chronological order.
+                  </p>
+                </Card>
+              </Link>
+            </div>
 
 
           </div>
-          
-             
-        
-     
-          
+
+
+
+
+
         </div>
+        }
       </section>
 
-     
+
 
       <BookstoreFooter />
     </>
