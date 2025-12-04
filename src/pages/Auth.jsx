@@ -109,7 +109,7 @@ function Auth({ register }) {
             theme: "colored",
           });
 
-          if (response.data?.user?.role == "BookStoreAdmin") {
+          if (response.data?.user?.role == "Bookstore Admin") {
             setTimeout(() => {
               navigate("/adminhome");
             }, 4000);

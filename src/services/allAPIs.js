@@ -22,7 +22,29 @@ export const AddBookAPI = async(reqBody,reqHeader)=>{
     return await commonAPI('POST',`${serverURL}/api/addBook`,reqBody,reqHeader)
 }
 
-//5 Get Book
-export const GetBookAPI = async(reqBody,reqHeader)=>{
-    return await commonAPI('POST',`${serverURL}/api/getBook`,reqBody,reqHeader)
+//5 Get Home Book
+export const HomeBookAPI = async()=>{
+    return await commonAPI('GET',`${serverURL}/api/homeBooks`,{},{})
+}
+
+//6 Get All Book
+export const AllBookAPI = async(reqHeader)=>{
+    return await commonAPI('GET',`${serverURL}/api/getBook?search=${searchKey}`,{},reqHeader)
+}
+
+//7 view a particular book details
+export const getABookAPI = async(id,reqHeader)=>{
+    return await commonAPI('GET',`${serverURL}/api/viewBooks/${id}`,{},reqHeader)
+}
+//8 Get Home Book
+// export const AdminHomeBookAPI = async()=>{
+//     return await commonAPI('GET',`${serverURL}/api/adminBooks`,{},reqHeader)
+// }
+export const AdminHomeBookAPI = async (reqHeader) => {
+  return await commonAPI("GET", `${serverURL}/api/adminBooks`, {}, reqHeader);
+}
+
+//9 Get user
+export const GetUserAPI = async(reqHeader)=>{
+    return await commonAPI('GET',`${serverURL}/api/getUser`,{},reqHeader)
 }
