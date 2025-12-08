@@ -48,3 +48,10 @@ export const AdminHomeBookAPI = async (reqHeader) => {
 export const GetUserAPI = async(reqHeader)=>{
     return await commonAPI('GET',`${serverURL}/api/getUser`,{},reqHeader)
 }
+
+//10 Add Job
+export const AddJobAPI = async(reqBody,reqHeader)=>{
+    return await commonAPI('POST',`${serverURL}/api/admin/addJob`,reqBody,reqHeader)
+}
+
+// 12 Delete Job
