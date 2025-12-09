@@ -9,71 +9,97 @@ import AdminHeader from '../components/AdminHeader';
 import AdminSidebar from '../components/AdminSidebar';
 import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from "flowbite-react";
 import BookStoreFooter from '../../components/BookStoreFooter';
-import { AddJobAPI } from '../../services/allAPIs';
+import { AddJobAPI, DeleteJobAPI } from '../../services/allAPIs';
 
 function AdminCareers() {
   const [openModal, setOpenModal] = useState(false);
   const emailInputRef = useRef(null);
-  const [token, setToken]=useState('')
-  const [jobDetails,setJobDetails]=useState({
-    jobTitle:"",
-    location:"",
-    jobType:"",
-    salary:"",
-    qualification:"",
-    experience:"",
-    description:""
+  const [token, setToken] = useState('')
+  const [jobDetails, setJobDetails] = useState({
+    jobTitle: "",
+    location: "",
+    jobType: "",
+    salary: "",
+    qualification: "",
+    experience: "",
+    description: ""
 
   })
 
-  const addJob=async(token)=>{
+  const addJob = async (token) => {
     console.log(jobDetails);
 
-     if(jobDetails.jobTitle==""||
-    jobDetails.location==""||
-    jobDetails.jobType==""||
-    jobDetails.salary==""||
-    jobDetails.qualification==""||
-    jobDetails.experience==""||
-   jobDetails. description==""){
+    if (jobDetails.jobTitle == "" ||
+      jobDetails.location == "" ||
+      jobDetails.jobType == "" ||
+      jobDetails.salary == "" ||
+      jobDetails.qualification == "" ||
+      jobDetails.experience == "" ||
+      jobDetails.description == "") {
       alert('please fill the form')
-    
-    }else{
+
+    } else {
       // api calling
-    // define reqHeader
-    // 1 to get token , and remove ""
+      // define reqHeader
+      // 1 to get token , and remove ""
 
-     const updatedToken = token.replace(/"/g,"")
-    
+      const updatedToken = token.replace(/"/g, "")
 
 
-   const reqHeader = {
-      Authorization: `Bearer ${updatedToken}`
-    };
-    try {
-      const response = await AddJobAPI(jobDetails,reqHeader)
-      console.log(response);
-      if(response.status==200){
-        alert(response.data.message)
-      }else{
-        alert(response.response.data)
+
+      const reqHeader = {
+        Authorization: `Bearer ${updatedToken}`
+      };
+      try {
+        const response = await AddJobAPI(jobDetails, reqHeader)
+        console.log(response);
+        if (response.status == 200) {
+          alert(response.data.message)
+        } else {
+          alert(response.response.data)
+        }
+
+      } catch (error) {
+        console.log(error);
+
       }
-      
-    } catch (error) {
-      console.log(error);
-      
-    }
 
     }
 
   }
-  
-  useEffect(()=>{
+
+
+  const HandleDelete = async (id) => {
+    try {
+      const updatedToken = token.replace(/"/g, "")
+
+      const reqHeader = {
+        Authorization: `Bearer ${updatedToken}`
+
+      }
+
+      console.log("inside admin Try");
+
+      const response = await DeleteJobAPI(id,reqHeader)
+      console.log(response.data)
+      if(response.status==200){
+        alert(response.data.message
+          
+        )
+      }
+
+    } catch (err) {
+      console.log(err);
+
+    }
+  }
+
+  useEffect(() => {
     setToken(sessionStorage.getItem("token"))
 
-    console.log(token );
-    
-  },[])
+    console.log(token);
+
+  }, [])
 
 
   return (
@@ -112,21 +138,21 @@ function AdminCareers() {
                       placeholder="Job Title"
                       required
                       className='mb-2'
-                      value={jobDetails.jobTitle} onChange={e=>setJobDetails({...jobDetails,jobTitle:e.target.value})}
+                      value={jobDetails.jobTitle} onChange={e => setJobDetails({ ...jobDetails, jobTitle: e.target.value })}
                     />
                     <TextInput
                       id=""
                       placeholder="Location"
                       required
                       className='mb-2'
-                      value={jobDetails.location} onChange={e=>setJobDetails({...jobDetails,location:e.target.value})}
+                      value={jobDetails.location} onChange={e => setJobDetails({ ...jobDetails, location: e.target.value })}
                     />
                     <TextInput
                       id=""
                       placeholder="Job Type"
                       required
                       className='mb-2'
-                      value={jobDetails.jobType} onChange={e=>setJobDetails({...jobDetails,jobType:e.target.value})}
+                      value={jobDetails.jobType} onChange={e => setJobDetails({ ...jobDetails, jobType: e.target.value })}
                     />
 
                     <TextInput
@@ -134,27 +160,27 @@ function AdminCareers() {
                       placeholder="Salary"
                       required
                       className='mb-2'
-                      value={jobDetails.salary} onChange={e=>setJobDetails({...jobDetails,salary:e.target.value})}
+                      value={jobDetails.salary} onChange={e => setJobDetails({ ...jobDetails, salary: e.target.value })}
                     />
                     <TextInput
                       id=""
-                      placeholder="Qualification"required
+                      placeholder="Qualification" required
                       className='mb-2'
-                      value={jobDetails.qualification} onChange={e=>setJobDetails({...jobDetails,qualification:e.target.value})}
+                      value={jobDetails.qualification} onChange={e => setJobDetails({ ...jobDetails, qualification: e.target.value })}
                     />
                     <TextInput
                       id=""
                       placeholder="Experience"
                       required
                       className='mb-2'
-                      value={jobDetails.experience} onChange={e=>setJobDetails({...jobDetails,experience:e.target.value})}
+                      value={jobDetails.experience} onChange={e => setJobDetails({ ...jobDetails, experience: e.target.value })}
                     />
                   </div>
 
 
                   <div className="max-w-md">
-                    <Textarea id="" placeholder="Description" required rows={4} 
-                    value={jobDetails.description} onChange={e=>setJobDetails({...jobDetails,description:e.target.value})}
+                    <Textarea id="" placeholder="Description" required rows={4}
+                      value={jobDetails.description} onChange={e => setJobDetails({ ...jobDetails, description: e.target.value })}
                     />
 
                   </div>
@@ -163,7 +189,7 @@ function AdminCareers() {
                   <div className="flex justify-end-safe">
                     <button type="button" class="text-white bg-gradient-to-r from-red-400 via-red-500 to-red-600 hover:bg-gradient-to-br focus:ring-0 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Reset</button>
 
-                    <button type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-0 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" onClick={()=>addJob(token)}>Add Job</button>
+                    <button type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-0 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2" onClick={() => addJob(token)}>Add Job</button>
                   </div>
                 </div>
               </ModalBody>
@@ -282,7 +308,7 @@ function AdminCareers() {
                     </TableRow>
                     <TableRow className="bg-white dark:border-gray-700 dark:bg-gray-800">
                       <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
-                      2
+                        2
                       </TableCell>
                       <TableCell>Store Manager</TableCell>
                       <TableCell>Ken</TableCell>
@@ -305,9 +331,9 @@ function AdminCareers() {
 
 
         </div>
-        
+
       </div>
-      <BookStoreFooter/>
+      <BookStoreFooter />
     </>
   );
 }

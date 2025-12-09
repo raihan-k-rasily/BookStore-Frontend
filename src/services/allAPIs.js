@@ -54,4 +54,13 @@ export const AddJobAPI = async(reqBody,reqHeader)=>{
     return await commonAPI('POST',`${serverURL}/api/admin/addJob`,reqBody,reqHeader)
 }
 
+//11 Get Job
+export const GetJobAPI = async(reqBody,reqHeader)=>{
+    return await commonAPI('GET',`${serverURL}/api/admin/getJob`,{},reqHeader)
+}
+
 // 12 Delete Job
+export const DeleteJobAPI = async(reqBody,reqHeader)=>{
+    return await commonAPI('DELETE',`${serverURL}/api/admin/deleteJob/${id}`,{},reqHeader)
+}
+
